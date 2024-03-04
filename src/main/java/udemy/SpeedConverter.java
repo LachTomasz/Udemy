@@ -16,12 +16,19 @@ public class SpeedConverter {
         if(bigCount < 0 || smallCount < 0 || goal < 0){
             return false;
         }
-
-
-        if (goal == bigCount*BIG_PACK + smallCount){
-            return true;
+        boolean result = false;
+        int totalBigWeight = bigCount * BIG_PACK;
+        if (totalBigWeight >= goal) {
+            int remaining = goal % BIG_PACK;
+            if (smallCount >= remaining) {
+                result = true;
+            }
+        } else {
+            if (smallCount >= goal - totalBigWeight) {
+                result = true;
+            }
         }
-        return false;
+        return result;
     }
     public static void numberToWords(int number){
         if (number < 0){
