@@ -1,16 +1,112 @@
 package udemy;
 
+import java.util.Scanner;
+
 public class SpeedConverter {
 
     public static void main(String[] args) {
 
-        canPack(2,1,11);
+        //printSquareStar(5);
+        inputThenPrintSumAndAverage();
 
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // write code here
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static int getBucketCount(double width, double height, double areaPerBucket, int extraBuckets){
+        if (width <=0 || height <=0 || areaPerBucket <=0 || extraBuckets <0){
+            return -1;
+        }
+        double area = width * height - areaPerBucket * extraBuckets;
+        return getBucketCount(area, areaPerBucket);
+    }
+
+    public static int getBucketCount(double width, double height, double areaPerBucket){
+        if (width <=0 || height <=0 || areaPerBucket <=0){
+            return -1;
+        }
+        double area = width * height;
+        return getBucketCount(area, areaPerBucket);
+    }
+
+    public static int getBucketCount(double area, double areaPerBucket){
+        if (area <=0 || areaPerBucket <=0){
+            return -1;
+        }
+        double numberOfBucket = area / areaPerBucket;
+        return (int) Math.ceil(numberOfBucket);
+    }
+
+    public static void inputThenPrintSumAndAverage(){
+        Scanner scanner = new Scanner(System.in);
+        int sum =0 ;
+        long avg = 0;
+        int count=0;
+        while (true) {
+            boolean hasNextInt = scanner.hasNextInt();
+            if(!hasNextInt){
+                break;
+            }
+            sum += scanner.nextInt();
+            count++;
+            scanner.nextLine();
+        }
+
+        if(count>0){
+            avg = Math.round((double)sum/count);
+        }
+        System.out.println("SUM = " + sum + " AVG = " + avg);
+        scanner.close();
+    }
+    private static final String STAR = "*";
+    private static final String SPACE = " ";
+
+    public static void printSquareStar(int number) {
+
+        if (number < 5) {
+            System.out.println("Invalid Value");
+            return;
+        }
+
+        // Iterate over each row
+        for (int row = 1; row <= number; row++) {
+            // Iterate over each column
+            for (int column = 1; column <= number; column++) {
+                // if either row or column equals 1, assign true to isFirstRowOrColumn.
+                boolean isFirstRowOrColumn = row == 1 || column == 1;
+                // if either row or column equals number, assign true to isLastRowOrColumn.
+                boolean isLastRowOrColumn = row == number || column == number;
+                // if either row equals column, or column equals number minus row plus 1, assign true to isFirstRowOrColumn.
+                boolean isDiagonal = (row == column) || (column == (number - row + 1));
+
+                if (isFirstRowOrColumn || isLastRowOrColumn || isDiagonal) {
+                    System.out.print(STAR);
+                } else {
+                    System.out.print(SPACE);
+                }
+            }
+            // Move to the next line
+            System.out.println();
+        }
+    }
+    public static int getLargestPrime(int number){
+        if(number < 2){
+            return -1;
+        }
+        int factor = -1;
+        for (int i = 2; i * i <= number; i++) {
+            if (number % i != 0) {
+                continue;
+            }
+            factor = i;
+            while (number % i == 0) {
+                number /= i;
+            }
+        }
+        return number == 1 ? factor : number;
+    }
+
     public static final int BIG_PACK = 5;
     public static boolean canPack(int bigCount, int smallCount, int goal){
         if(bigCount < 0 || smallCount < 0 || goal < 0){
